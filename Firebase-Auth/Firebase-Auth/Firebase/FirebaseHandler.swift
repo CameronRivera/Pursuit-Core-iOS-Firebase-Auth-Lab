@@ -37,6 +37,7 @@ class FirebaseHandler {
         }
     }
     
-    
+    func testFunc(){
+    }
     
 }

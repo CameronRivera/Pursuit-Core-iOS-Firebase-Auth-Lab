@@ -9,13 +9,28 @@
 import UIKit
 import FirebaseAuth
 
+// TODO: Implement Updating user photos
+// TODO: Implement Updating user phone number
 class ProfileViewController: UIViewController {
 
+    // Outlets
+    @IBOutlet weak var displayNameTextField: UITextField!
+    @IBOutlet weak var phoneTextField: UITextField!
+    @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var profilePictureImageView: UIImageView!
+    
     private var currentUser: User
+   // private var phoneCredential: PhoneAuthCredential
+    private var imagePicker = UIImagePickerController()
+    private var selectedImage: UIImage
     
     // Initializers
     init?(_ coder: NSCoder, _ user: User){
         currentUser = user
+//        if let cred = PhoneAuthCredential(coder: coder){
+//            phoneCredential = cred
+//        }
+        selectedImage = UIImage(systemName: "moon")!
         super.init(coder: coder)
     }
     
@@ -26,6 +41,104 @@ class ProfileViewController: UIViewController {
     // Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUp()
+    }
+    
+    private func setUp(){
+        navigationItem.title = "Profile Details"
+        displayNameTextField.text = currentUser.displayName
+        phoneTextField.text = currentUser.phoneNumber
+        emailTextField.text = currentUser.email
+        imagePicker.delegate = self
+        emailTextField.delegate = self
+        phoneTextField.delegate = self
+        displayNameTextField.delegate = self
+    }
+    
+    @IBAction func commitChangesButtonPressed(_ sender: UIBarButtonItem){
+        var mutableUserData = currentUser.createProfileChangeRequest()
+        if let name = displayNameTextField.text, !name.isEmpty{
+            mutableUserData.displayName = name
+        }
+        
+        
+//        if let phone = phoneTextField.text, !phone.isEmpty{
+//            currentUser.updatePhoneNumber(phoneCredential) { [weak self] error in
+//                if let error = error{
+//                    self?.showAlert("Update Error", "Could not update phone Number: \(error)")
+//                } else {
+//                    print("Phone number updated")
+//                }
+//            }
+//        }
+        if let email = emailTextField.text, !email.isEmpty{
+            currentUser.updateEmail(to: email) { [weak self] error in
+                if let error = error {
+                    self?.showAlert("Update Error", "Could not successfully update email address: \(error)")
+                } else {
+                    print("Email updated")
+                }
+            }
+        }
+    }
+    
+    @IBAction func updateProfileImageButtonPressed(_ sender: UIButton){
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let cameraAction = UIAlertAction(title: "Camera", style: .default) { [unowned self] alertAction in
+                self.imagePicker.sourceType = .camera
+                self.present(self.imagePicker, animated: true)
+        }
+        
+        let gallery = UIAlertAction(title: "Gallery", style: .default) { [unowned self] alertAction in
+            self.imagePicker.sourceType = .photoLibrary
+            self.present(self.imagePicker,animated: true)
+        }
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        if UIImagePickerController.isSourceTypeAvailable(.camera){
+            alertController.addAction(cameraAction)
+        }
+        alertController.addAction(gallery)
+        alertController.addAction(cancel)
+        present(alertController, animated: true)
+    }
+    
+    @IBAction func deleteAccountPressed(_ sender: UIButton){
+        currentUser.delete { [weak self] error in
+            if let error = error{
+                self?.showAlert("Deletion Error", "Encountered an error while trying to delete account: \(error)")
+            } else {
+                self?.showAlert("Account Deleted", "Your account has been successfully deleted.", completion: { action -> (Void) in
+                    self?.navigationController?.popViewController(animated: true)
+                })
+            }
+        }
     }
 
+}
+
+extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
+            print("Selected image not found.")
+            return
+        }
+        profilePictureImageView.image = image
+        dismiss(animated: true)
+    }
+}
+
+extension ProfileViewController: UITextFieldDelegate{
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
 }
