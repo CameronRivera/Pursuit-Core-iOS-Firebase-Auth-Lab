@@ -31,13 +31,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vjt-Aq-vIO">
-                                <rect key="frame" x="136.5" y="433" width="141" height="30"/>
-                                <state key="normal" title="Create New Account"/>
-                                <connections>
-                                    <action selector="createdNewAccountButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wNv-Hm-vM1"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jq4-9T-Vcr">
                                 <rect key="frame" x="183.5" y="373" width="47" height="30"/>
                                 <state key="normal" title="Sign in"/>
@@ -51,21 +44,37 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Tp-av-0j7">
+                                <rect key="frame" x="114" y="433" width="186" height="30"/>
+                                <state key="normal" title="Sign in with Phone Number"/>
+                                <connections>
+                                    <action selector="loginInWithPhoneNumberPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7yd-zJ-evB"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vjt-Aq-vIO">
+                                <rect key="frame" x="136.5" y="493" width="141" height="30"/>
+                                <state key="normal" title="Create New Account"/>
+                                <connections>
+                                    <action selector="createdNewAccountButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wNv-Hm-vM1"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="Jq4-9T-Vcr" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="6sA-T3-Vax"/>
+                            <constraint firstItem="Vjt-Aq-vIO" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="94t-vG-QNa"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="iiz-Fa-lcA" secondAttribute="trailing" constant="20" id="AF5-4f-PHc"/>
                             <constraint firstItem="QTD-sz-PEU" firstAttribute="centerY" secondItem="J3Q-F7-SYg" secondAttribute="centerY" id="Abq-Cf-nJS"/>
                             <constraint firstItem="QTD-sz-PEU" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="FcA-TC-DgZ"/>
                             <constraint firstItem="J3Q-F7-SYg" firstAttribute="leading" secondItem="QTD-sz-PEU" secondAttribute="trailing" constant="20" id="NTo-uI-0LL"/>
                             <constraint firstItem="iiz-Fa-lcA" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="150" id="OAX-j6-NQp"/>
                             <constraint firstItem="qTb-Mp-8YX" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="SWT-NK-pTa"/>
-                            <constraint firstItem="Vjt-Aq-vIO" firstAttribute="top" secondItem="Jq4-9T-Vcr" secondAttribute="bottom" constant="30" id="V19-Za-Qk5"/>
-                            <constraint firstItem="Vjt-Aq-vIO" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="ZhQ-7g-HWC"/>
-                            <constraint firstItem="Vjt-Aq-vIO" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="cls-z0-xWQ"/>
+                            <constraint firstItem="4Tp-av-0j7" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="gxs-gI-Wmb"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="J3Q-F7-SYg" secondAttribute="trailing" constant="20" id="jfb-2K-Tnl"/>
                             <constraint firstItem="J3Q-F7-SYg" firstAttribute="top" secondItem="iiz-Fa-lcA" secondAttribute="bottom" constant="20" id="kys-GF-hsU"/>
+                            <constraint firstItem="Vjt-Aq-vIO" firstAttribute="top" secondItem="4Tp-av-0j7" secondAttribute="bottom" constant="30" id="mko-NX-hsM"/>
+                            <constraint firstItem="4Tp-av-0j7" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="nB3-se-614"/>
+                            <constraint firstItem="4Tp-av-0j7" firstAttribute="top" secondItem="Jq4-9T-Vcr" secondAttribute="bottom" constant="30" id="nL3-Tf-ryH"/>
                             <constraint firstItem="qTb-Mp-8YX" firstAttribute="centerY" secondItem="iiz-Fa-lcA" secondAttribute="centerY" id="prs-w0-sC5"/>
                             <constraint firstItem="iiz-Fa-lcA" firstAttribute="leading" secondItem="qTb-Mp-8YX" secondAttribute="trailing" constant="55" id="xeE-nG-rCZ"/>
                         </constraints>
@@ -222,6 +231,72 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rqH-Cg-C3l" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="137.68115942028987" y="777.45535714285711"/>
+        </scene>
+        <!--Login with Phone Number-->
+        <scene sceneID="VXp-BM-oFd">
+            <objects>
+                <viewController storyboardIdentifier="LoginWithPhoneController" id="FpI-7U-vfM" customClass="LoginWithPhoneController" customModule="Firebase_Auth" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="aOM-HU-56i">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JWp-4b-u1k">
+                                <rect key="frame" x="20" y="128" width="49" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Example: +15555555555" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kHB-ND-Acu">
+                                <rect key="frame" x="89" y="121.5" width="305" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="feq-31-PaP">
+                                <rect key="frame" x="182.5" y="195.5" width="49" height="30"/>
+                                <state key="normal" title="Submit"/>
+                                <connections>
+                                    <action selector="commitChangesButtonPressed:" destination="FpI-7U-vfM" eventType="touchUpInside" id="7xG-4R-L1t"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="Qa2-RM-YcJ" firstAttribute="trailing" secondItem="kHB-ND-Acu" secondAttribute="trailing" constant="20" id="EzI-cB-qta"/>
+                            <constraint firstItem="feq-31-PaP" firstAttribute="top" secondItem="kHB-ND-Acu" secondAttribute="bottom" constant="40" id="FLV-VK-ESm"/>
+                            <constraint firstItem="kHB-ND-Acu" firstAttribute="leading" secondItem="JWp-4b-u1k" secondAttribute="trailing" constant="20" id="HYH-7z-s9u"/>
+                            <constraint firstItem="feq-31-PaP" firstAttribute="centerX" secondItem="aOM-HU-56i" secondAttribute="centerX" id="Unx-5H-X64"/>
+                            <constraint firstItem="JWp-4b-u1k" firstAttribute="top" secondItem="Qa2-RM-YcJ" secondAttribute="top" constant="40" id="dMJ-KM-Gdf"/>
+                            <constraint firstItem="kHB-ND-Acu" firstAttribute="centerY" secondItem="JWp-4b-u1k" secondAttribute="centerY" id="fQH-Vw-0Hm"/>
+                            <constraint firstItem="JWp-4b-u1k" firstAttribute="leading" secondItem="Qa2-RM-YcJ" secondAttribute="leading" constant="20" id="yx9-w4-j9W"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Qa2-RM-YcJ"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Login with Phone Number" id="Old-qF-Ss2"/>
+                    <connections>
+                        <outlet property="phoneNumTextField" destination="kHB-ND-Acu" id="297-4C-u4H"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gtX-jb-AjL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1047.8260869565217" y="1442.4107142857142"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Ukh-TT-4k6">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Efv-ML-FIi" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="INl-gw-YOe">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="FpI-7U-vfM" kind="relationship" relationship="rootViewController" id="9LX-V5-YCx"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xQK-uC-1EZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="137.68115942028987" y="1441.7410714285713"/>
         </scene>
     </scenes>
 </document>

@@ -9,8 +9,6 @@
 import UIKit
 import FirebaseAuth
 
-// TODO: Implement Updating user photos
-// TODO: Implement Updating user phone number
 class ProfileViewController: UIViewController {
 
     // Outlets
@@ -20,16 +18,12 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var profilePictureImageView: UIImageView!
     
     private var currentUser: User
-   // private var phoneCredential: PhoneAuthCredential
     private var imagePicker = UIImagePickerController()
     private var selectedImage: UIImage
     
     // Initializers
     init?(_ coder: NSCoder, _ user: User){
         currentUser = user
-//        if let cred = PhoneAuthCredential(coder: coder){
-//            phoneCredential = cred
-//        }
         selectedImage = UIImage(systemName: "moon")!
         super.init(coder: coder)
     }
@@ -56,9 +50,14 @@ class ProfileViewController: UIViewController {
     }
     
     @IBAction func commitChangesButtonPressed(_ sender: UIBarButtonItem){
-        var mutableUserData = currentUser.createProfileChangeRequest()
+        guard let url = URL(string: "https://fastly.4sqi.net/img/general/500/212169387_C2-Wh9iB-a9yFzkkMFUuT3RsxV7Rna5lQWhqCNs0Bds.jpg") else {
+            print("Bad url String")
+            return
+        }
+        let mutableUserData = currentUser.createProfileChangeRequest()
         if let name = displayNameTextField.text, !name.isEmpty{
             mutableUserData.displayName = name
+            mutableUserData.photoURL = url
         }
         
         
@@ -78,6 +77,14 @@ class ProfileViewController: UIViewController {
                 } else {
                     print("Email updated")
                 }
+            }
+        }
+        
+        mutableUserData.commitChanges { [weak self] error in
+            if let error = error {
+                self?.showAlert("Error", "Could not commit changes to profile: \(error).")
+            }else {
+                self?.showAlert("Success", "Changes to profile saved.")
             }
         }
     }

@@ -72,6 +72,12 @@ class LoginViewController: UIViewController {
         }
     }
 
+    @IBAction func loginInWithPhoneNumberPressed(_ sender: UIButton){
+        guard let phoneVC = storyboard?.instantiateViewController(identifier: "LoginWithPhoneController") as? LoginWithPhoneController else{
+            fatalError("Could not create instance of LoginWithPhoneController.")
+        }
+        navigationController?.pushViewController(phoneVC, animated: true)
+    }
 
 }
 
