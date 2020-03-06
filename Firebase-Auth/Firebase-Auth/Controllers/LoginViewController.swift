@@ -15,7 +15,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     
     // MARK: Properties
-
+    
     // MARK: Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,56 +29,48 @@ class LoginViewController: UIViewController {
     // MARK: Actions
     @IBAction func signInButtonPressed(_ sender: UIButton){
         guard let email = emailTextField.text,
-              let password = passwordTextField.text,
-              !email.isEmpty,
-              !password.isEmpty else {
+            let password = passwordTextField.text,
+            !email.isEmpty,
+            !password.isEmpty else {
                 showAlert("Authentication Error", "One or more fields is missing.")
                 return
         }
-        FirebaseHandler.shared.logInExistingUser(email, password) {[weak self] result in
+        FirebaseAuthHandler.shared.logInExistingUser(email, password) {[weak self] result in
             switch result {
             case .failure(let error):
                 self?.showAlert("Authentication Error", "Encountered Error while attempting to authenticate: \(error)")
-            case .success(let user):
-                if let profileVC = self?.storyboard?.instantiateViewController(identifier: "ProfileViewController", creator: { creator in
-                    ProfileViewController(creator, user)
-                }){
-                    self?.navigationController?.pushViewController(profileVC, animated: true)
-                }
+            case .success:
+                UIViewController.showViewController(storyboardName: "Main", viewControllerId: "ProfileNavigationController")
             }
         }
     }
     
     @IBAction func createdNewAccountButtonPressed(_ sender: UIButton){
         guard let email = emailTextField.text,
-              let password = passwordTextField.text,
-              !email.isEmpty,
-              !password.isEmpty else {
+            let password = passwordTextField.text,
+            !email.isEmpty,
+            !password.isEmpty else {
                 showAlert("Authentication Error", "One or more fields is missing.")
                 return
         }
         
-        FirebaseHandler.shared.createNewAccount(email, password) { [weak self] result in
+        FirebaseAuthHandler.shared.createNewAccount(email, password) { [weak self] result in
             switch result {
             case .failure(let error):
-                self?.showAlert("Authentication Error", "Encountered an error while attempting to create a new account: \(error)")
-            case .success(let user):
-                if let profileVC = self?.storyboard?.instantiateViewController(identifier: "ProfileViewController", creator: { creator in
-                    ProfileViewController(creator, user)
-                }){
-                    self?.navigationController?.pushViewController(profileVC, animated: true)
-                }
+                self?.showAlert("Authentication Error", "Encountered an error while attempting to create a new account: \(error.localizedDescription)")
+            case .success:
+                UIViewController.showViewController(storyboardName: "Main", viewControllerId: "ProfileNavigationController")
             }
         }
     }
-
+    
     @IBAction func loginInWithPhoneNumberPressed(_ sender: UIButton){
         guard let phoneVC = storyboard?.instantiateViewController(identifier: "LoginWithPhoneController") as? LoginWithPhoneController else{
             fatalError("Could not create instance of LoginWithPhoneController.")
         }
         navigationController?.pushViewController(phoneVC, animated: true)
     }
-
+    
 }
 
 extension LoginViewController: UITextFieldDelegate{

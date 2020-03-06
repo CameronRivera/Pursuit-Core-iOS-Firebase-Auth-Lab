@@ -6,7 +6,10 @@ target 'Firebase-Auth' do
   use_frameworks!
 
   # Pods for Firebase-Auth
-    pod 'Firebase/Analytics'
-    pod 'Firebase/Auth' 
+    pod 'Firebase/Firestore'
+    pod 'FirebaseFirestoreSwift'
+    pod 'Firebase/Auth'
+    pod 'Firebase/Storage'
+    pod 'Kingfisher'
 
 end

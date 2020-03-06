@@ -179,6 +179,11 @@
                         <viewLayoutGuide key="safeArea" id="ieN-pR-sET"/>
                     </view>
                     <navigationItem key="navigationItem" id="NE7-3Z-dg9">
+                        <barButtonItem key="leftBarButtonItem" title="Sign Out" id="8lX-V5-yfH">
+                            <connections>
+                                <action selector="signOutButtonPressed:" destination="jg5-w7-xfC" id="aIu-RW-VWH"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Commit Changes" id="7eG-WB-s8U">
                             <connections>
                                 <action selector="commitChangesButtonPressed:" destination="jg5-w7-xfC" id="uBl-Uw-cED"/>
@@ -196,10 +201,10 @@
             </objects>
             <point key="canvasLocation" x="1047.8260869565217" y="778.125"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Login Navigation Controller-->
         <scene sceneID="QzF-2V-LWV">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="SKC-9s-OHl" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="LoginNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="SKC-9s-OHl" customClass="LoginNavigationController" customModule="Firebase_Auth" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Tdl-7B-49V">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -214,10 +219,10 @@
             </objects>
             <point key="canvasLocation" x="137.68115942028987" y="97.767857142857139"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Profile Navigation Controller-->
         <scene sceneID="GP9-R7-2mU">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="q8e-up-OS9" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="ProfileNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="q8e-up-OS9" customClass="ProfileNavigationController" customModule="Firebase_Auth" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="tdJ-Bn-JEM">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>

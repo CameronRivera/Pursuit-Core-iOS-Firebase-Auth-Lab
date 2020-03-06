@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import Kingfisher
 import FirebaseAuth
 
 class ProfileViewController: UIViewController {
-
+    
     // Outlets
     @IBOutlet weak var displayNameTextField: UITextField!
     @IBOutlet weak var phoneTextField: UITextField!
@@ -20,6 +21,7 @@ class ProfileViewController: UIViewController {
     private var currentUser: User
     private var imagePicker = UIImagePickerController()
     private var selectedImage: UIImage
+    private var storageHandler = FirebaseStorageHandler()
     
     // Initializers
     init?(_ coder: NSCoder, _ user: User){
@@ -29,7 +31,9 @@ class ProfileViewController: UIViewController {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        currentUser = Auth.auth().currentUser!
+        selectedImage = UIImage(systemName: "moon")!
+        super.init(coder: coder)
     }
     
     // Lifecycle Methods
@@ -43,6 +47,7 @@ class ProfileViewController: UIViewController {
         displayNameTextField.text = currentUser.displayName
         phoneTextField.text = currentUser.phoneNumber
         emailTextField.text = currentUser.email
+        profilePictureImageView.kf.setImage(with: currentUser.photoURL)
         imagePicker.delegate = self
         emailTextField.delegate = self
         phoneTextField.delegate = self
@@ -50,19 +55,38 @@ class ProfileViewController: UIViewController {
     }
     
     @IBAction func commitChangesButtonPressed(_ sender: UIBarButtonItem){
-        guard let url = URL(string: "https://fastly.4sqi.net/img/general/500/212169387_C2-Wh9iB-a9yFzkkMFUuT3RsxV7Rna5lQWhqCNs0Bds.jpg") else {
-            print("Bad url String")
-            return
-        }
+        
         let mutableUserData = currentUser.createProfileChangeRequest()
+        
         if let name = displayNameTextField.text, !name.isEmpty{
             mutableUserData.displayName = name
-            mutableUserData.photoURL = url
         }
         
+        if let image = profilePictureImageView.image {
+            
+            let resizedImage = UIImage.resizeImage(originalImage: image, rect: self.profilePictureImageView.bounds)
+            
+            self.storageHandler.updatePhoto(userId: self.currentUser.uid, image: resizedImage) { [weak self] result in
+                switch result {
+                case .failure(let error):
+                    self?.showAlert("Error Retrieving URL", "\(error.localizedDescription)")
+                case .success(let url):
+                    mutableUserData.photoURL = url
+                    
+                    mutableUserData.commitChanges { [weak self] error in
+                        if let error = error {
+                            self?.showAlert("Error", "Could not commit changes to profile: \(error).")
+                        }else {
+                            self?.showAlert("Success", "Changes to profile saved.")
+                        }
+                    }
+                }
+            }
+        }
         
 //        if let phone = phoneTextField.text, !phone.isEmpty{
-//            currentUser.updatePhoneNumber(phoneCredential) { [weak self] error in
+//            let credential = PhoneAuthProvider.provider().credential(withVerificationID: UserDefaultsHandler.getVerification(), verificationCode: FirebaseData.verificationCode)
+//            currentUser.updatePhoneNumber(credential) { [weak self] error in
 //                if let error = error{
 //                    self?.showAlert("Update Error", "Could not update phone Number: \(error)")
 //                } else {
@@ -70,21 +94,15 @@ class ProfileViewController: UIViewController {
 //                }
 //            }
 //        }
+        
         if let email = emailTextField.text, !email.isEmpty{
-            currentUser.updateEmail(to: email) { [weak self] error in
+            
+            self.currentUser.updateEmail(to: email) { [weak self] error in
                 if let error = error {
                     self?.showAlert("Update Error", "Could not successfully update email address: \(error)")
                 } else {
                     print("Email updated")
                 }
-            }
-        }
-        
-        mutableUserData.commitChanges { [weak self] error in
-            if let error = error {
-                self?.showAlert("Error", "Could not commit changes to profile: \(error).")
-            }else {
-                self?.showAlert("Success", "Changes to profile saved.")
             }
         }
     }
@@ -93,8 +111,8 @@ class ProfileViewController: UIViewController {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         let cameraAction = UIAlertAction(title: "Camera", style: .default) { [unowned self] alertAction in
-                self.imagePicker.sourceType = .camera
-                self.present(self.imagePicker, animated: true)
+            self.imagePicker.sourceType = .camera
+            self.present(self.imagePicker, animated: true)
         }
         
         let gallery = UIAlertAction(title: "Gallery", style: .default) { [unowned self] alertAction in
@@ -123,7 +141,15 @@ class ProfileViewController: UIViewController {
             }
         }
     }
-
+    
+    @IBAction func signOutButtonPressed(_ sender: UIBarButtonItem){
+        do {
+            try Auth.auth().signOut()
+            UIViewController.showViewController(storyboardName: "Main", viewControllerId: "LoginNavigationController")
+        } catch {
+            showAlert("Sign Out Error", "\(error.localizedDescription)")
+        }
+    }
 }
 
 extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{

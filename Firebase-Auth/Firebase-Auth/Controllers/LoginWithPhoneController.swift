@@ -22,6 +22,10 @@ class LoginWithPhoneController: UIViewController {
         super.viewDidLoad()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+    }
+    
     @IBAction func commitChangesButtonPressed(_ sender: UIButton){
         guard let phoneNumber = phoneNumTextField.text, !phoneNumber.isEmpty, phoneNumber.count > 7, areYouANumber(phoneNumber) else {
             showAlert("Error", "Phone number is not correctly formatted.")
@@ -69,22 +73,19 @@ class LoginWithPhoneController: UIViewController {
     private func promptUserForVerificationCode(){
         let verificationCodeAlert = UIAlertController(title: "Enter Code", message: "Enter the code from the text message.", preferredStyle: .alert)
             verificationCodeAlert.addTextField()
-        guard let textField = verificationCodeAlert.textFields?[0], let textFieldText = textField.text, !textFieldText.isEmpty else {
+        
+        guard let textField = verificationCodeAlert.textFields?[0] else {
             return
         }
         
         let submitAlertAction = UIAlertAction(title: "Submit", style: .default, handler: { [weak self](alertAction) in
-            FirebaseData.verificationCode = textFieldText
+            FirebaseData.verificationCode = textField.text!
             let credential = PhoneAuthProvider.provider().credential(withVerificationID: UserDefaultsHandler.getVerification(), verificationCode: FirebaseData.verificationCode)
             Auth.auth().signIn(with: credential) { (authResult, error) in
                 if let error = error {
-                    self?.showAlert("Error", "Could not verify credentials: \(error)")
-                }else if let result = authResult{
-                    if let profileVC = self?.storyboard?.instantiateViewController(identifier: "ProfileViewController", creator: { coder in
-                        return ProfileViewController(coder, result.user)
-                    }){
-                        self?.navigationController?.pushViewController(profileVC, animated: true)
-                    }
+                    self?.showAlert("Error", "Could not verify credentials: \(error.localizedDescription)")
+                } else {
+                    UIViewController.showViewController(storyboardName: "Main", viewControllerId: "ProfileNavigationController")
                 }
             }
         })
@@ -99,8 +100,8 @@ class LoginWithPhoneController: UIViewController {
                 return
             }else if let verification = verificationID {
                 UserDefaultsHandler.setVerification(verification)
+                self?.promptUserForVerificationCode()
             }
         }
-        promptUserForVerificationCode()
     }
 }
